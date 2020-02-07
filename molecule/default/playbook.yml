@@ -1,0 +1,23 @@
+---
+
+- name: Converge
+  hosts: all
+  pre_tasks:
+  - name: update package repository (Debian)
+    apt: update_cache=true
+    when: ansible_os_family == "Debian"
+  - name: update package repository (Red Hat)
+    yum: update_cache=true
+    when: ansible_os_family == "RedHat"
+  - name: install netstat (Debian/Red Hat)
+    package: name=net-tools state=present
+    when: >
+      ansible_os_family == "Debian" or
+      ansible_os_family == "RedHat"
+  vars:
+    dnsmasq_force_set_etc_resolv_conf: false  # not possible with Docker
+    dnsmasq_upstream_servers:
+      - 8.8.8.8
+      - 4.4.4.4
+  roles:
+    - role: ansible-role-dnsmasq

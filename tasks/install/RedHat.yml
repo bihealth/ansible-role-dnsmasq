@@ -1,0 +1,4 @@
+---
+
+- name: install dnsmasq
+  yum: name=dnsmasq state=present

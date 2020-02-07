@@ -1,0 +1,24 @@
+---
+
+# - name: define distribution-specific variables
+#   include_vars: "{{ ansible_os_family }}.yml"
+
+- name: perform installation
+  include_tasks: install/{{ ansible_os_family }}.yml
+
+- name: force-set /etc/resolv.conf
+  copy:
+    dest: /etc/resolv.conf
+    content: |
+      nameserver ::1
+      nameserver 127.0.0.1
+  when: dnsmasq_force_set_etc_resolv_conf
+
+- name: create /etc/dnsmasq.conf
+  template:
+    src: etc/dnsmasq.conf.j2
+    dest: /etc/dnsmasq.conf
+  notify: restart dnsmasq
+
+- name: start and enable dnsmasq
+  systemd: name=dnsmasq state=started enabled=true

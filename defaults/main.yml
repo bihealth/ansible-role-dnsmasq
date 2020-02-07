@@ -1,0 +1,7 @@
+---
+
+# Whether or not to force-set resolver to self in /etc/resolv.conf
+dnsmasq_force_set_etc_resolv_conf: false
+
+# Upstream servers to use.
+dnsmasq_upstream_servers: []

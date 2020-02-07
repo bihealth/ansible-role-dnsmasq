@@ -1,0 +1,7 @@
+{% if dnsmasq_force_set_etc_resolv_conf %}
+no-resolv
+{% endif %}
+
+{% for server in dnsmasq_upstream_servers %}
+server={{ server }}
+{% endfor %}
